@@ -1,4 +1,6 @@
 (function () {
+  const DA2_URL = '#';
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -19,6 +21,19 @@
       skipLink.addEventListener('click', () => {
         skipLink.blur();
       });
+    }
+
+    const poweredBy = document.querySelector('.powered-by-link');
+    if (poweredBy) {
+      poweredBy.setAttribute('href', DA2_URL);
+      poweredBy.setAttribute('title', 'Sito in pubblicazione');
+      poweredBy.setAttribute('aria-label', 'Powered by DA2 - sito in pubblicazione');
+
+      if (DA2_URL === '#') {
+        poweredBy.addEventListener('click', (event) => {
+          event.preventDefault();
+        });
+      }
     }
   });
 })();
