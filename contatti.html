@@ -10,28 +10,35 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Salta al contenuto principale</a>
-  <header>
-    <nav class="navbar" aria-label="Principale">
+  <header class="site-header">
+    <div class="topbar">
       <div class="brand">
-        <a class="brand-home" href="index.html" aria-label="Vai alla home">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span class="brand-name">Rigenera Terzo Settore</span>
-        </a>
-        <div class="brand-powered">
-          <span class="powered-label">Powered by</span>
-          <a class="da2-link" href="#" target="_blank" rel="noopener" aria-label="Visita il sito di DA2">
-            <img src="img/da2-logo.png" alt="Logo DA2" class="da2-logo">
-            <span class="da2-meta">DA2 S.p.A. Benefit</span>
-          </a>
+        <div class="brand-dot" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-title">Rigenera Terzo Settore</div>
         </div>
       </div>
-      <div class="nav-links">
-        <a href="index.html" aria-label="Home">Home</a>
-        <a href="soluzioni.html" aria-label="Soluzioni">Soluzioni</a>
-        <a href="come-funziona.html" aria-label="Come funziona">Come funziona</a>
-        <a href="contatti.html" aria-label="Contatti">Contatti</a>
-        <a class="btn-external" href="https://www.rigeneracondominio.it/" target="_blank" rel="noopener" aria-label="Vai a Rigenera Condominio">Vai a Rigenera Condominio</a>
+
+      <div class="powered">
+        <span class="powered-label">Powered by</span>
+        <a class="powered-link" href="#" aria-label="DA2 S.p.A. Benefit">
+          <img src="img/da2-logo.png" alt="DA2 logo" class="powered-logo">
+          <span class="powered-name">DA2 S.p.A. Benefit</span>
+        </a>
       </div>
+
+      <button class="menu-toggle" type="button" aria-label="Apri menu"
+        aria-expanded="false" aria-controls="primary-nav">
+        <span class="hamburger" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <nav id="primary-nav" class="site-nav" aria-label="Navigazione principale">
+      <a href="index.html">Home</a>
+      <a href="soluzioni.html">Soluzioni</a>
+      <a href="come-funziona.html">Come funziona</a>
+      <a href="contatti.html">Contatti</a>
+      <a class="nav-cta" href="https://www.rigeneracondominio.it/" target="_blank" rel="noopener">Vai a Rigenera Condominio</a>
     </nav>
   </header>
 
@@ -117,6 +124,7 @@
     </div>
   </footer>
 
+  <script src="/assets/menu-mobile.js" defer></script>
   <script src="/assets/app.js"></script>
 </body>
 </html>
