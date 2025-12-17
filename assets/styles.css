@@ -217,6 +217,18 @@ header {
   transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
 
+.cta-row {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 22px 12px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.cta-row .btn-external {
+  width: auto;
+}
+
 .nav-links a:hover,
 .nav-links a:focus-visible {
   color: var(--text);
@@ -675,6 +687,9 @@ main {
   .brand-powered {
     padding-left: 2px;
   }
+  .cta-row {
+    padding: 0 16px 10px;
+  }
   .nav-links {
     gap: 12px;
     justify-content: flex-start;
@@ -777,4 +792,96 @@ h2 {
     padding-left: 24px;
     padding-right: 24px;
   }
+}
+
+/* Mobile optimization patch */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { margin:0; padding:0; overflow-x:hidden; }
+img { max-width:100%; height:auto; display:block; }
+body { line-height:1.6; font-size:16px; }
+
+h1 { font-size: clamp(28px, 6.2vw, 44px); line-height:1.15; }
+h2 { font-size: clamp(20px, 4.6vw, 30px); }
+p  { font-size:16px; }
+
+@media (max-width: 768px) {
+
+  /* riduci padding in alto generale */
+  header, .header, .topbar, .navbar, nav {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
+  /* badge/pill in alto: meno altezza, meno bordo, testo più piccolo */
+  .pill, .badge, .chip, .tag,
+  .header-pill, .brand-pill, .title-pill {
+    padding: 8px 12px !important;
+    border-radius: 14px !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+    max-width: 100% !important;
+  }
+
+  /* blocco powered by: rendilo su 2 righe compatte e centra */
+  .poweredby, .powered-by, .powered, .brand-powered {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    align-items: flex-start !important;
+    margin-top: 8px !important;
+    margin-bottom: 6px !important;
+  }
+  .poweredby img, .powered-by img, .powered img {
+    height: 22px !important;
+    width: auto !important;
+  }
+
+  /* menu: da orizzontale largo a wrap su 2 righe (senza aria eccessiva) */
+  nav ul, .nav ul, .menu, .menu ul, .nav-links {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px 14px !important;
+    padding: 6px 0 0 0 !important;
+    margin: 0 !important;
+  }
+  nav a, .nav a, .menu a {
+    font-size: 15px !important;
+    padding: 8px 10px !important;
+    border-radius: 12px !important;
+  }
+
+  /* bottone “Vai a Rigenera Condominio”: meno aria, ancora touch friendly */
+  a.button, .cta, .btn, .btn-external, button {
+    width: 100% !important;
+    min-height: 44px !important;
+    padding: 12px 14px !important;
+    font-size: 16px !important;
+  }
+
+  /* riduci lo spazio prima del “mega riquadro immagine” */
+  .hero, .hero-wrap, .hero-container, .top-hero, .intro {
+    margin-top: 10px !important;
+    padding-top: 6px !important;
+  }
+
+  /* se l’immagine grande sopra l’H1 è troppo invasiva, riducila */
+  .hero img, .hero-wrap img, .intro img, .top-hero img,
+  .cover img, .banner img {
+    max-height: 240px !important;
+    object-fit: contain !important;
+    margin: 8px auto 0 auto !important;
+  }
+
+  /* container laterale: più pulito su mobile */
+  .container, main, section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+@media (min-width: 769px) {
+  a.button, .cta, .btn, .btn-external, button { width: auto; }
 }
