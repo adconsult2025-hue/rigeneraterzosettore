@@ -687,3 +687,94 @@ main {
     align-items: flex-start;
   }
 }
+
+/* Responsive and accessibility enhancements */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+body {
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+p,
+li {
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: clamp(32px, 5vw, 48px);
+}
+
+h2 {
+  font-size: clamp(22px, 4vw, 34px);
+}
+
+.container {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.btn,
+.btn-external {
+  min-height: 44px;
+}
+
+.hero-actions,
+.cta-banner-actions {
+  gap: 14px;
+}
+
+@media (max-width: 767px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .cta-banner,
+  .section,
+  .hero {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero-actions,
+  .cta-banner-actions {
+    flex-direction: column;
+  }
+
+  .btn,
+  .btn-external {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-actions,
+  .cta-banner-actions {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
