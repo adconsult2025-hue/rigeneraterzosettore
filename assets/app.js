@@ -2,6 +2,7 @@
   const DA2_URL = '#';
   const LEAD_API_URL = 'https://app.certouser.it/api/lead-submit';
   const WIZARD_STORAGE_KEY = 'rts_area_state_v1';
+  const WIZARD_STORAGE_HINTS = ['wizard', 'rigenera', 'terzosettore', 'lead', 'esito'];
 
   const observer = new IntersectionObserver(
     (entries) => {
@@ -19,13 +20,127 @@
     { threshold: 0.18, rootMargin: '0px 0px -10%' }
   );
 
-  const getWizardState = () => {
+  const safeJsonParse = (value) => {
     try {
-      const stored = localStorage.getItem(WIZARD_STORAGE_KEY);
-      return stored ? JSON.parse(stored) : null;
+      return { ok: true, value: JSON.parse(value) };
     } catch (error) {
-      return null;
+      return { ok: false, value: null };
     }
+  };
+
+  const collectStorageMatches = (storage) => {
+    const matches = {};
+    if (!storage) return matches;
+    for (let index = 0; index < storage.length; index += 1) {
+      const key = storage.key(index);
+      if (!key) continue;
+      const lowerKey = key.toLowerCase();
+      if (key !== WIZARD_STORAGE_KEY && !WIZARD_STORAGE_HINTS.some((hint) => lowerKey.includes(hint))) continue;
+      const storedValue = storage.getItem(key);
+      if (typeof storedValue !== 'string') continue;
+      const parsed = safeJsonParse(storedValue);
+      if (parsed.ok) {
+        matches[key] = parsed.value;
+      }
+    }
+    return matches;
+  };
+
+  const collectPageObjects = () => {
+    const candidates = ['wizardState', 'wizard_state', 'wizard', 'run', 'state', 'result', 'answers'];
+    return candidates.reduce((acc, key) => {
+      const value = window[key];
+      if (value && typeof value === 'object') {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+  };
+
+  const collectHiddenFields = (form) => {
+    if (!form) return {};
+    const fields = {};
+    form.querySelectorAll('input[type="hidden"]').forEach((input) => {
+      const name = input.name || input.id;
+      if (!name) return;
+      fields[name] = input.value;
+    });
+    return fields;
+  };
+
+  const mergeWizardSelections = (target, source) => {
+    if (!source || typeof source !== 'object') return;
+    if (source.answers && typeof source.answers === 'object') {
+      Object.assign(target, source.answers);
+    }
+    if (source.selections && typeof source.selections === 'object') {
+      Object.assign(target, source.selections);
+    }
+    if (source.org_type && !target.org_type) {
+      target.org_type = source.org_type;
+    }
+    if (source.ente_type && !target.org_type) {
+      target.org_type = source.ente_type;
+    }
+  };
+
+  const mergeWizardResult = (target, source) => {
+    if (!source || typeof source !== 'object') return;
+    if (source.result && typeof source.result === 'object') {
+      Object.assign(target, source.result);
+    }
+    if (source.esito && typeof source.esito === 'object') {
+      Object.assign(target, source.esito);
+    }
+    if (source.outcome && typeof source.outcome === 'object') {
+      Object.assign(target, source.outcome);
+    }
+    if (source.score !== undefined) target.score = source.score;
+    if (source.punteggio !== undefined) target.punteggio = source.punteggio;
+    if (source.indicazioni && typeof source.indicazioni === 'object') {
+      target.indicazioni = source.indicazioni;
+    }
+  };
+
+  const buildWizardState = (form) => {
+    const storageLocal = collectStorageMatches(window.localStorage);
+    const storageSession = collectStorageMatches(window.sessionStorage);
+    const pageObjects = collectPageObjects();
+    const hiddenFields = collectHiddenFields(form);
+    const selections = {};
+    const result = {};
+
+    const sources = [storageLocal, storageSession, pageObjects];
+    sources.forEach((source) => {
+      Object.values(source).forEach((value) => {
+        mergeWizardSelections(selections, value);
+        mergeWizardResult(result, value);
+      });
+    });
+
+    Object.entries(hiddenFields).forEach(([key, value]) => {
+      if (value !== '' && selections[key] === undefined) {
+        selections[key] = value;
+      }
+    });
+
+    return {
+      page: window.location.pathname,
+      ts: new Date().toISOString(),
+      userAgent: window.navigator.userAgent,
+      selections,
+      result,
+      raw: {
+        storage: { local: storageLocal, session: storageSession },
+        page: pageObjects,
+        hidden_fields: hiddenFields
+      }
+    };
+  };
+
+  const normalizeWizardState = (payload, wizardState) => {
+    const ws = payload.wizard_state ?? wizardState;
+    payload.wizard_state = typeof ws === 'string' ? ws : JSON.stringify(ws);
   };
 
   const getAttachmentsMetadata = (form) => {
@@ -41,12 +156,15 @@
 
   const buildLeadPayload = (form, leadType) => {
     const data = new FormData(form);
-    const wizardState = getWizardState();
+    const wizardState = buildWizardState(form);
     const attachments = getAttachmentsMetadata(form);
+    const resolvedLeadType =
+      leadType || (window.location.pathname.includes('esito') ? 'esito' : 'contatto');
+    const orgType = wizardState?.selections?.org_type || wizardState?.selections?.ente_type || 'ets';
     const payload = {
       source_site: 'rigeneraterzosettore.it',
-      org_type: 'ets',
-      lead_type: leadType,
+      org_type: orgType,
+      lead_type: resolvedLeadType,
       org_name: data.get('ente')?.toString().trim() || '',
       full_name: (data.get('referente') || data.get('nome'))?.toString().trim() || '',
       role: data.get('ruolo')?.toString().trim() || '',
@@ -56,9 +174,7 @@
       message: data.get('messaggio')?.toString().trim() || '',
       source_url: window.location.href
     };
-    if (wizardState) {
-      payload.wizard_state = wizardState;
-    }
+    normalizeWizardState(payload, wizardState);
     if (attachments.length) {
       payload.attachments = attachments;
     }
