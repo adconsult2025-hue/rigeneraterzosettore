@@ -253,6 +253,11 @@ input[type="file"] {
   display: block;
 }
 
+.notice.error {
+  background: rgba(176, 55, 55, 0.12);
+  color: #b03737;
+}
+
 .debug {
   background: #0d1b2a;
   color: #d5e6f7;
