@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Esito preliminare – Area Riservata</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/area-riservata/assets/app.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-badge" aria-hidden="true"></span>
+        <span>Rigenera Terzo Settore</span>
+      </div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/area-riservata/">Area Riservata</a>
+        <a href="/area-riservata/dashboard">Dashboard</a>
+        <a class="active" href="/area-riservata/esito">Esito</a>
+      </nav>
+    </div>
+  </header>
+
+  <main data-page="esito">
+    <section class="hero">
+      <h1>Esito preliminare</h1>
+      <span class="badge" data-status-badge>Valutazione in corso</span>
+      <p class="muted">Sintesi orientativa in base alle risposte inserite nel wizard.</p>
+    </section>
+
+    <div class="layout">
+      <div>
+        <section class="card">
+          <h2>Riepilogo risposte</h2>
+          <ul class="response-list" data-response-list></ul>
+        </section>
+
+        <section class="card">
+          <h2>Indicazione preliminare</h2>
+          <ul data-indication-list></ul>
+          <p class="muted" style="margin-top: 12px;">
+            Nota importante: l’esito non è vincolante e serve unicamente a indirizzare l’ente verso il percorso più coerente, con presa in carico su CERtoUSER.
+          </p>
+        </section>
+
+        <section class="card">
+          <h2>Richiedi supporto</h2>
+          <form data-contact-form>
+            <div class="form-grid two">
+              <div>
+                <label for="nome">Nome e Cognome *</label>
+                <input id="nome" name="nome" required type="text" placeholder="Nome e Cognome">
+              </div>
+              <div>
+                <label for="ruolo">Ruolo</label>
+                <select id="ruolo" name="ruolo">
+                  <option value="">Seleziona</option>
+                  <option>Legale rappresentante</option>
+                  <option>Presidente</option>
+                  <option>Direttore</option>
+                  <option>Altro</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-grid two">
+              <div>
+                <label for="ente">Ente (denominazione) *</label>
+                <input id="ente" name="ente" required type="text" placeholder="Nome ente">
+              </div>
+              <div>
+                <label for="sede">Sede / Indirizzo</label>
+                <input id="sede" name="sede" type="text" placeholder="Indirizzo">
+              </div>
+            </div>
+            <div class="form-grid two">
+              <div>
+                <label for="citta">Città *</label>
+                <input id="citta" name="citta" required type="text" placeholder="Città">
+              </div>
+              <div>
+                <label for="email">Email *</label>
+                <input id="email" name="email" required type="email" placeholder="nome@email.it">
+              </div>
+            </div>
+            <div class="form-grid two">
+              <div>
+                <label for="telefono">Telefono</label>
+                <input id="telefono" name="telefono" type="tel" placeholder="Telefono">
+              </div>
+              <div>
+                <label for="allegati">Allegati</label>
+                <input id="allegati" name="allegati" type="file" multiple>
+              </div>
+            </div>
+            <div>
+              <label for="messaggio">Messaggio *</label>
+              <textarea id="messaggio" name="messaggio" required placeholder="Descrivi brevemente il supporto richiesto"></textarea>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" name="privacy" required>
+                Inviando la richiesta, acconsenti a essere ricontattato per le finalità indicate. Informativa privacy disponibile su richiesta.
+              </label>
+            </div>
+            <button class="btn btn-primary" type="submit">Invia richiesta</button>
+          </form>
+          <div class="notice" data-form-notice></div>
+          <div class="card" style="margin-top: 16px;">
+            <h3>Dati raccolti</h3>
+            <pre class="debug" data-form-debug>{}</pre>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="button-group">
+            <a class="btn btn-secondary" href="/area-riservata/wizard.html">Torna al wizard</a>
+            <a class="btn btn-ghost" href="/area-riservata/dashboard">Dashboard</a>
+          </div>
+        </section>
+      </div>
+
+      <aside class="sidebar">
+        <div class="card">
+          <h3>Debug JSON</h3>
+          <pre class="debug" data-esito-debug>{}</pre>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">Powered by DA2</footer>
+  <script src="/area-riservata/assets/app.js"></script>
+</body>
+</html>
