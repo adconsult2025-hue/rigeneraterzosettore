@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Area Riservata • Terzo Settore</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/area-riservata/assets/app.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-badge" aria-hidden="true"></span>
+        <span>Rigenera Terzo Settore</span>
+      </div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a class="active" href="/area-riservata/">Area Riservata</a>
+        <a href="/area-riservata/dashboard">Dashboard</a>
+        <a href="/area-riservata/esito">Esito</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Accesso riservato – Enti del Terzo Settore</h1>
+      <p class="muted">Percorso istituzionale dedicato alla valutazione guidata di progetti di <strong>RIGENERAZIONE IMMOBILIARE</strong> e transizione energetica.</p>
+      <p>Quest’area è riservata agli Enti del Terzo Settore e consente una valutazione preliminare guidata della possibilità di attivare percorsi integrati di:</p>
+      <ul>
+        <li>Rigenerazione immobiliare del patrimonio dell’ente</li>
+        <li>Comunità Energetiche (CER / CEC)</li>
+        <li>Conto Termico e incentivi energetici</li>
+        <li>Efficientamento energetico e sostenibilità ESG</li>
+      </ul>
+      <p>
+        Il percorso è strutturato tramite un wizard decisionale che consente di verificare, in modo orientativo, la compatibilità dell’ente e del patrimonio immobiliare con i diversi strumenti disponibili.
+      </p>
+      <p>
+        L’esito fornito è preliminare, non vincolante e finalizzato esclusivamente a indirizzare l’ente verso il percorso più coerente, che potrà essere successivamente validato e gestito nella piattaforma operativa CERtoUSER.
+      </p>
+      <div class="button-group">
+        <a class="btn btn-primary" href="/area-riservata/dashboard">Vai alla dashboard</a>
+        <a class="btn btn-secondary" href="/area-riservata/wizard.html">Avvia valutazione</a>
+      </div>
+    </section>
+
+    <div class="layout">
+      <div>
+        <section class="card">
+          <h2>Richiedi accesso / Contatto</h2>
+          <form data-contact-form>
+            <div class="form-grid two">
+              <div>
+                <label for="nome">Nome e Cognome *</label>
+                <input id="nome" name="nome" required type="text" placeholder="Nome e Cognome">
+              </div>
+              <div>
+                <label for="ruolo">Ruolo</label>
+                <select id="ruolo" name="ruolo">
+                  <option value="">Seleziona</option>
+                  <option>Legale rappresentante</option>
+                  <option>Presidente</option>
+                  <option>Direttore</option>
+                  <option>Altro</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-grid two">
+              <div>
+                <label for="ente">Ente (denominazione) *</label>
+                <input id="ente" name="ente" required type="text" placeholder="Nome ente">
+              </div>
+              <div>
+                <label for="sede">Sede / Indirizzo</label>
+                <input id="sede" name="sede" type="text" placeholder="Indirizzo">
+              </div>
+            </div>
+            <div class="form-grid two">
+              <div>
+                <label for="citta">Città *</label>
+                <input id="citta" name="citta" required type="text" placeholder="Città">
+              </div>
+              <div>
+                <label for="email">Email *</label>
+                <input id="email" name="email" required type="email" placeholder="nome@email.it">
+              </div>
+            </div>
+            <div class="form-grid two">
+              <div>
+                <label for="telefono">Telefono</label>
+                <input id="telefono" name="telefono" type="tel" placeholder="Telefono">
+              </div>
+              <div>
+                <label for="allegati">Allegati</label>
+                <input id="allegati" name="allegati" type="file" multiple>
+              </div>
+            </div>
+            <div>
+              <label for="messaggio">Messaggio *</label>
+              <textarea id="messaggio" name="messaggio" required placeholder="Descrivi brevemente la richiesta"></textarea>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" name="privacy" required>
+                Inviando la richiesta, acconsenti a essere ricontattato per le finalità indicate. Informativa privacy disponibile su richiesta.
+              </label>
+            </div>
+            <button class="btn btn-primary" type="submit">Invia richiesta</button>
+          </form>
+          <div class="notice" data-form-notice></div>
+          <div class="card" style="margin-top: 16px;">
+            <h3>Dati raccolti</h3>
+            <pre class="debug" data-form-debug>{}</pre>
+          </div>
+        </section>
+      </div>
+
+      <aside class="sidebar">
+        <div class="card">
+          <h3>Come funziona</h3>
+          <ol class="muted">
+            <li>Accesso su invito / richiesta</li>
+            <li>Wizard decisionale</li>
+            <li>Esito preliminare</li>
+            <li>Presa in carico su CERtoUSER</li>
+          </ol>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">Powered by DA2</footer>
+  <script src="/area-riservata/assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard – Terzo Settore</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/area-riservata/assets/app.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-badge" aria-hidden="true"></span>
+        <span>Rigenera Terzo Settore</span>
+      </div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/area-riservata/">Area Riservata</a>
+        <a class="active" href="/area-riservata/dashboard">Dashboard</a>
+        <a href="/area-riservata/esito">Esito</a>
+      </nav>
+    </div>
+  </header>
+
+  <main data-page="dashboard">
+    <section class="hero">
+      <h1>Dashboard – Terzo Settore</h1>
+      <p class="muted">Gestione delle valutazioni preliminari e ripresa delle attività in corso.</p>
+    </section>
+
+    <div class="layout">
+      <div>
+        <section class="card">
+          <h2>Valutazione preliminare</h2>
+          <p class="muted">Avvia una nuova analisi o riprendi quella già avviata.</p>
+          <div class="button-group">
+            <button class="btn btn-primary" data-action="new-eval">Nuova valutazione</button>
+            <a class="btn btn-secondary" href="/area-riservata/wizard.html">Riprendi valutazione</a>
+            <a class="btn btn-ghost" href="/area-riservata/esito">Vai all’esito</a>
+          </div>
+        </section>
+
+        <section class="card">
+          <h3>Stato attuale</h3>
+          <p><strong>Completamento:</strong> <span data-completion>0%</span></p>
+          <p><strong>Ultimo aggiornamento:</strong> <span data-updated>Non disponibile</span></p>
+        </section>
+
+        <section class="card">
+          <details>
+            <summary class="muted">Debug JSON</summary>
+            <pre class="debug" data-dashboard-debug>{}</pre>
+          </details>
+        </section>
+      </div>
+
+      <aside class="sidebar">
+        <div class="card">
+          <h3>Azioni rapide</h3>
+          <p class="muted">Utilizza i pulsanti per proseguire il percorso nel wizard decisionale o consultare l’esito preliminare.</p>
+          <div class="button-group">
+            <a class="btn btn-secondary" href="/area-riservata/wizard.html">Vai al wizard</a>
+            <a class="btn btn-ghost" href="/area-riservata/esito">Riepilogo esito</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">Powered by DA2</footer>
+  <script src="/area-riservata/assets/app.js"></script>
+</body>
+</html>
