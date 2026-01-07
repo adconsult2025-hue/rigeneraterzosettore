@@ -1,5 +1,6 @@
 const STORAGE_KEY = "rts_area_state_v1";
 const CONTACT_KEY = "userContact";
+const LEAD_API_URL = "https://app.certouser.it/api/lead-submit";
 
 const steps = [
   {
@@ -78,6 +79,15 @@ const qs = (selector, scope = document) => scope.querySelector(selector);
 const qsa = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
 
 const nowISO = () => new Date().toISOString();
+
+const getWizardState = () => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : null;
+  } catch (error) {
+    return null;
+  }
+};
 
 const loadState = () => {
   try {
@@ -173,6 +183,67 @@ const buildLeadPayload = (type) => {
   };
 };
 
+const getAttachmentsMetadata = (form) => {
+  const inputs = Array.from(form.querySelectorAll('input[type="file"]'));
+  return inputs.flatMap((input) =>
+    Array.from(input.files || []).map((file) => ({
+      name: file.name,
+      size: file.size,
+      type: file.type
+    }))
+  );
+};
+
+const buildLeadInboxPayload = (form, leadType) => {
+  const data = new FormData(form);
+  const wizardState = getWizardState();
+  const attachments = getAttachmentsMetadata(form);
+  const payload = {
+    source_site: "rigeneraterzosettore.it",
+    org_type: "ets",
+    lead_type: leadType,
+    org_name: data.get("ente")?.toString().trim() || "",
+    full_name: data.get("nome")?.toString().trim() || "",
+    role: data.get("ruolo")?.toString().trim() || "",
+    email: data.get("email")?.toString().trim() || "",
+    phone: data.get("telefono")?.toString().trim() || "",
+    city: data.get("citta")?.toString().trim() || "",
+    message: data.get("messaggio")?.toString().trim() || "",
+    source_url: window.location.href
+  };
+  if (wizardState) {
+    payload.wizard_state = wizardState;
+  }
+  if (attachments.length) {
+    payload.attachments = attachments;
+  }
+  return payload;
+};
+
+const setFormNotice = (notice, message, isError = false) => {
+  if (!notice) return;
+  if (!message) {
+    notice.textContent = "";
+    notice.classList.remove("show", "error");
+    return;
+  }
+  notice.textContent = message;
+  notice.classList.add("show");
+  notice.classList.toggle("error", isError);
+};
+
+const setSubmitState = (button, isBusy) => {
+  if (!button) return;
+  if (isBusy) {
+    button.dataset.label = button.textContent;
+    button.textContent = "Invio in corso...";
+    button.disabled = true;
+    return;
+  }
+  button.textContent = button.dataset.label || button.textContent;
+  button.disabled = false;
+};
+
 const renderJson = (target, data) => {
   if (target) {
     target.textContent = JSON.stringify(data, null, 2);
@@ -186,7 +257,9 @@ const initContactForms = () => {
   forms.forEach((form) => {
     const notice = qs("[data-form-notice]", form.parentElement);
     const debug = qs("[data-form-debug]", form.parentElement);
-    form.addEventListener("submit", (event) => {
+    const submitButton = qs("button[type='submit']", form);
+    const leadType = form.dataset.leadType || "richiesta_accesso";
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
       const data = Object.fromEntries(new FormData(form).entries());
       const contact = {
@@ -202,12 +275,36 @@ const initContactForms = () => {
         timestamp: nowISO()
       };
       setUserContact(contact);
-      if (notice) {
-        notice.classList.add("show");
-        notice.textContent = "Richiesta registrata. Verrai ricontattato.";
-      }
-      if (debug) {
-        renderJson(debug, buildLeadPayload("contact"));
+      const payload = buildLeadInboxPayload(form, leadType);
+      setFormNotice(notice, "", false);
+      setSubmitState(submitButton, true);
+
+      try {
+        const response = await fetch(LEAD_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error("lead-submit-failed");
+        }
+
+        form.reset();
+        setFormNotice(notice, "Richiesta inviata correttamente", false);
+      } catch (error) {
+        setFormNotice(
+          notice,
+          "Errore durante l’invio. Verifica i dati e riprova tra poco.",
+          true
+        );
+      } finally {
+        setSubmitState(submitButton, false);
+        if (debug) {
+          renderJson(debug, payload);
+        }
       }
     });
   });
